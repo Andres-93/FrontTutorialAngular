@@ -1,0 +1,41 @@
+<div class="container">
+    <h1>Prestamo</h1>
+
+    <form>
+        <mat-form-field>
+            <input type="text" matInput placeholder="Identificador"  name="id" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select disableRipple  name="client" [(ngModel)]="prestamo.client" required>
+                <mat-option *ngFor="let client of clients" [value]="client"  >{{client.name}}</mat-option>
+            </mat-select>
+            <mat-error>Por favor elija un cliente</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select disableRipple  name="game"  [(ngModel)]="prestamo.game" required>
+                <mat-option *ngFor="let game of games" [value]="game" >{{game.title}}</mat-option>
+            </mat-select>
+            <mat-error>Por favor elija un juego</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Selecione el rango del prestamo</mat-label>
+            <mat-date-range-input  [rangePicker]="picker">
+              <input matStartDate  placeholder="Fecha inicio">
+              <input matEndDate  placeholder="Fecha final">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+
+    </form>
+
+    <div class="buttons">
+        <button mat-stroked-button (click)="onClose()">Cerrar</button>
+        <button mat-flat-button color="primary" (click)="onSave()">Guardar</button>
+    </div>
+</div>
+
