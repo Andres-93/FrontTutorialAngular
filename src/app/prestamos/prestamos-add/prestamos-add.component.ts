@@ -18,6 +18,7 @@ export class PrestamosAddComponent implements OnInit {
   clients: Client[];
   games: Game[];
 
+
   constructor( public dialogRef: MatDialogRef<PrestamosAddComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private clientService: ClientService,

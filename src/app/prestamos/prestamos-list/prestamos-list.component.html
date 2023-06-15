@@ -1,6 +1,35 @@
 <div class="container">
     <h1>Prestamos</h1>
 
+    <div class="filters">
+        <form>
+            <mat-form-field>
+                <mat-label>Título del juego</mat-label>
+                <input type="text" matInput placeholder="Título del juego" [(ngModel)]="filtroTitulo" name="title">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Cliente</mat-label>
+                <mat-select disableRipple [(ngModel)]="filtroCliente" name="cliente">
+                    <mat-option *ngFor="let client of listaClientes" [value]="client">{{client.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Filtrar por fecha</mat-label>
+                <input matInput [matDatepicker]="picker"  [(ngModel)]="filtroFecha" [ngModelOptions]="{standalone: true}">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>    
+        </form>
+
+        <div class="buttons">
+            <button mat-stroked-button (click)="onCleanFilter()">Limpiar</button> 
+            <button mat-stroked-button (click)="onSearch()">Filtrar</button> 
+        </div>
+    </div>   
+
     <mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="id">
             <mat-header-cell *matHeaderCellDef> Identificador </mat-header-cell>
@@ -19,12 +48,12 @@
 
         <ng-container matColumnDef="startDate">
             <mat-header-cell *matHeaderCellDef> Fecha de prestamo </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.startdate}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.startdate | date:'dd/MM/yyyy'}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="endDate">
             <mat-header-cell *matHeaderCellDef> Fecha de devolucion  </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.enddate}} </mat-cell>
+            <mat-cell *matCellDef="let element">{{element.enddate | date:'dd/MM/yyyy'}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="action">

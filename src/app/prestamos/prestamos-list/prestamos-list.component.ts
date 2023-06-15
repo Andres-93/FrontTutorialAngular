@@ -6,6 +6,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { Pageable } from 'src/app/core/model/Pageable';
 import { PrestamosAddComponent } from '../prestamos-add/prestamos-add.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Client } from 'src/app/clients/model/Client';
+import { ClientService } from 'src/app/clients/client.service';
 
 @Component({
   selector: 'app-prestamos-list',
@@ -21,10 +23,19 @@ export class PrestamosListComponent implements OnInit {
   pageSize: number = 5;
   totalElements: number = 0;
 
+  listaClientes: Client[];
+  filtroCliente: Client;
+  filtroTitulo: string;
+  filtroFecha: Date;
+
   constructor(public prestamoService: PrestamosService,
+    public clientService: ClientService,
     public dialog: MatDialog,) { }
 
   ngOnInit(): void {
+    this.clientService.getClientes().subscribe(clientes=>{
+      this.listaClientes = clientes;
+    })
     this.loadPage();
   }
 
@@ -67,5 +78,22 @@ dialogRef.afterClosed().subscribe(result => {
   eliminarPrestamo(element){
 
   }
+
+  onCleanFilter(): void {
+    this.filtroTitulo = null;
+    this.filtroCliente = null;
+
+    this.onSearch();
+}
+
+onSearch(): void { 
+  console.log(this.filtroFecha);
+    let title = this.filtroTitulo;
+    let clientId = this.filtroCliente != null ? this.filtroCliente.id : null;
+
+    this.prestamoService.getPrestamosFiltrados(title, clientId).subscribe(
+        prestamos => {this.dataSource.data = prestamos});
+    
+}
 
 }
