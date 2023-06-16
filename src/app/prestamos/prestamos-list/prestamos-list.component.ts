@@ -82,16 +82,17 @@ dialogRef.afterClosed().subscribe(result => {
   onCleanFilter(): void {
     this.filtroTitulo = null;
     this.filtroCliente = null;
+    this.filtroFecha = null;
 
     this.onSearch();
 }
 
 onSearch(): void { 
-  console.log(this.filtroFecha);
+    let fecha = this.filtroFecha;
     let title = this.filtroTitulo;
     let clientId = this.filtroCliente != null ? this.filtroCliente.id : null;
 
-    this.prestamoService.getPrestamosFiltrados(title, clientId).subscribe(
+    this.prestamoService.getPrestamosFiltrados(title, clientId,fecha).subscribe(
         prestamos => {this.dataSource.data = prestamos});
     
 }

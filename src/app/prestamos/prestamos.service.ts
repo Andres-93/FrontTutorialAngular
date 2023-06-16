@@ -6,6 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import { Pageable } from '../core/model/Pageable';
 import { PrestamosPage } from './prestamo/PrestamosPage';
 import { GameService } from '../game/game.service';
+import { DatePipe } from '@angular/common';
 
 
 @Injectable({
@@ -13,7 +14,8 @@ import { GameService } from '../game/game.service';
 })
 export class PrestamosService {
 
-  constructor(private http: HttpClient, private gameService:GameService) { }
+  constructor(private http: HttpClient,
+    public datepipe: DatePipe) { }
 
   getAllPrestamos(): Observable<Prestamo[]> {
     return this.http.get<Prestamo[]>('http://localhost:8080/prestamo');
@@ -23,16 +25,16 @@ export class PrestamosService {
     return this.http.post<PrestamosPage>('http://localhost:8080/prestamo', {pageable:pageable});
 } 
 
-getPrestamosFiltrados(title?: string, clientId?: number): Observable<Prestamo[]> {
+getPrestamosFiltrados(title?: string, clientId?: number,fecha?: Date): Observable<Prestamo[]> {
   /*let gameId;
   if(title){
     return this.gameService.getGames(title).pipe(switchMap(games => this.http.get<Prestamo[]>(this.composeFindUrl(games[0]?.id, clientId))));
   }
   */
-  return this.http.get<Prestamo[]>(this.composeFindUrl(title, clientId));
+  return this.http.get<Prestamo[]>(this.composeFindUrl(title, clientId,fecha));
 }
 
-private composeFindUrl(title?: string, clientId?: number) : string {
+private composeFindUrl(title?: string, clientId?: number,fecha?: Date) : string {
   let params = '';
 
   if (title != null) {
@@ -42,6 +44,12 @@ private composeFindUrl(title?: string, clientId?: number) : string {
   if (clientId != null) {
       if (params != '') params += "&";
       params += "idClient="+clientId;
+  }
+
+  if(fecha != null){
+    let fechaFormat =this.datepipe.transform(fecha, 'dd/MM/yyyy');;
+    if(params != '') params += "&";
+    params += "fecha=" + fechaFormat;
   }
 
   let url = 'http://localhost:8080/prestamo'
