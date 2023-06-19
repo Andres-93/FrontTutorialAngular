@@ -1,0 +1,26 @@
+<div class="container">
+    <h1 class="titulo">ERROR</h1>
+    <div class="container-img">
+        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="150px" height="150px" viewBox="0 0 980.000000 980.000000" preserveAspectRatio="xMidYMid meet">
+
+            <g transform="translate(0.000000,980.000000) scale(0.100000,-0.100000)"
+            fill="#FF0000" stroke="none">
+            <path d="M4661 8959 c-714 -41 -1417 -276 -2011 -672 -977 -652 -1625 -1688
+            -1779 -2844 -131 -981 98 -1977 642 -2793 652 -977 1688 -1625 2844 -1779 981
+            -131 1977 98 2793 642 885 591 1503 1497 1725 2531 230 1073 17 2199 -588
+            3106 -654 979 -1691 1627 -2849 1780 -158 21 -454 41 -568 38 -36 0 -130 -5
+            -209 -9z m-659 -2576 l898 -898 900 900 900 900 292 -293 293 -292 -900 -900
+            -900 -900 900 -900 900 -900 -293 -292 -292 -293 -900 900 -900 900 -900 -900
+            -900 -900 -292 293 -293 292 900 900 900 900 -900 900 -900 900 290 290 c159
+            159 292 290 295 290 3 0 409 -404 902 -897z"/>
+            </g>
+        </svg>
+    </div>
+    <ul>
+        <li class = "errores" *ngFor="let mensajae of listaMensajes">{{mensajae}}</li>
+      </ul>  
+    <div class="buttons">
+        <button mat-stroked-button (click)="close()">Cerrar</button>
+    </div>
+</div>
+

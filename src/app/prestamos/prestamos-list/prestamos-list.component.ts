@@ -8,6 +8,7 @@ import { PrestamosAddComponent } from '../prestamos-add/prestamos-add.component'
 import { MatDialog } from '@angular/material/dialog';
 import { Client } from 'src/app/clients/model/Client';
 import { ClientService } from 'src/app/clients/client.service';
+import { DialogConfirmationComponent } from 'src/app/core/dialog-confirmation/dialog-confirmation.component';
 
 @Component({
   selector: 'app-prestamos-list',
@@ -75,8 +76,18 @@ dialogRef.afterClosed().subscribe(result => {
 
 }
 
-  eliminarPrestamo(element){
+  eliminarPrestamo(prestamo: Prestamo){
+    const dialogRef = this.dialog.open(DialogConfirmationComponent, {
+      data: { title: "Eliminar prestamo", description: "Atención si borra el prestamo se perderán sus datos.<br> ¿Desea eliminar el prestamo?" }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.prestamoService.eliminarPrestamo(prestamo.id).subscribe(result => {
+          this.ngOnInit();
+        }); 
+      }
+    });
   }
 
   onCleanFilter(): void {

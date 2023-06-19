@@ -25,12 +25,15 @@ export class PrestamosService {
     return this.http.post<PrestamosPage>('http://localhost:8080/prestamo', {pageable:pageable});
 } 
 
+savePrestamo(prestamo: Prestamo){
+  prestamo.startdate = this.datepipe.transform(prestamo.startdate, 'yyyy-MM-dd');
+  prestamo.enddate = this.datepipe.transform(prestamo.enddate, 'yyyy-MM-dd');
+  let url = 'http://localhost:8080/prestamo';
+  return this.http.put<Prestamo>(url, prestamo);
+}
+
 getPrestamosFiltrados(title?: string, clientId?: number,fecha?: Date): Observable<Prestamo[]> {
-  /*let gameId;
-  if(title){
-    return this.gameService.getGames(title).pipe(switchMap(games => this.http.get<Prestamo[]>(this.composeFindUrl(games[0]?.id, clientId))));
-  }
-  */
+ 
   return this.http.get<Prestamo[]>(this.composeFindUrl(title, clientId,fecha));
 }
 
@@ -47,7 +50,7 @@ private composeFindUrl(title?: string, clientId?: number,fecha?: Date) : string 
   }
 
   if(fecha != null){
-    let fechaFormat =this.datepipe.transform(fecha, 'dd/MM/yyyy');;
+    let fechaFormat =this.datepipe.transform(fecha, 'dd/MM/yyyy');
     if(params != '') params += "&";
     params += "fecha=" + fechaFormat;
   }
@@ -57,5 +60,9 @@ private composeFindUrl(title?: string, clientId?: number,fecha?: Date) : string 
   if (params == '') return url;
   else return url + '?'+params;
   
+}
+
+eliminarPrestamo(idPrestamo){
+  return this.http.delete('http://localhost:8080/prestamo/'+idPrestamo);
 }
 }

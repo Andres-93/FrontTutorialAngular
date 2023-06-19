@@ -1,0 +1,29 @@
+.container {
+    min-width: 350px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    .titulo{
+        color: red;
+        text-align: center;
+        font-weight: 500;
+    }
+     .container-img{
+        display: flex;
+        justify-content: center;
+        .img-erorr{
+            height: 150px;
+            width: 150px;
+        }   
+     } 
+     .errores{
+        color :red;
+     }
+
+    .buttons {
+      text-align: right;
+      button {
+          margin-left: 10px;
+      }
+    }
+}  

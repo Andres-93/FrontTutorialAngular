@@ -7,12 +7,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { DialogConfirmationComponent } from './dialog-confirmation/dialog-confirmation.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { DialogErrorComponent } from './dialog-error/dialog-error.component';
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
     DialogConfirmationComponent,
+    DialogErrorComponent,
   ],
   imports: [
     CommonModule,

@@ -1,7 +1,7 @@
 <div class="container">
     <h1>Prestamo</h1>
 
-    <form>
+    <form #newPrestamoForm="ngForm">
         <mat-form-field>
             <input type="text" matInput placeholder="Identificador"  name="id" disabled>
         </mat-form-field>
@@ -25,19 +25,19 @@
         <mat-form-field>
             <mat-label>Selecione el rango del prestamo</mat-label>
             <mat-date-range-input  [rangePicker]="picker">
-              <input matStartDate  placeholder="Fecha inicio">
-              <input matEndDate  placeholder="Fecha final">
+              <input matStartDate  name="FechaInicio" [(ngModel)]="prestamo.startdate"  placeholder="Fecha inicio" required>
+              <input matEndDate   name="FechaFinal" [(ngModel)]="prestamo.enddate" placeholder="Fecha final" required>
             </mat-date-range-input>
             <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
-          </mat-form-field>
-
+            <mat-error>Por favor elija un rango de fechas</mat-error>
+        </mat-form-field>
     </form>
 
     <div class="buttons">
         <button mat-stroked-button (click)="onClose()">Cerrar</button>
-        <button mat-flat-button color="primary" (click)="onSave()">Guardar</button>
+        <button mat-flat-button color="primary" (click)="onSave()"  [disabled]="newPrestamoForm.form.invalid">Guardar</button>
     </div>
 </div>
 

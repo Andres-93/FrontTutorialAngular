@@ -5,6 +5,6 @@ export class Prestamo {
     id: number;
     game: Game;
     client: Client;
-    startdate: Date;
-    enddate: Date;
+    startdate: string;
+    enddate: string;
 }

@@ -2,10 +2,11 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Prestamo } from '../prestamo/Prestamo';
 import { Client } from 'src/app/clients/model/Client';
 import { Game } from 'src/app/game/model/Game';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ClientService } from 'src/app/clients/client.service';
 import { GameService } from 'src/app/game/game.service';
 import { PrestamosService } from '../prestamos.service';
+import { DialogErrorComponent } from 'src/app/core/dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-prestamos-add',
@@ -23,7 +24,8 @@ export class PrestamosAddComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private clientService: ClientService,
     private gamesService: GameService,
-    private prestamosService: PrestamosService)
+    private prestamosService: PrestamosService,
+    public dialog: MatDialog)
      { }
 
   ngOnInit(): void {
@@ -46,7 +48,14 @@ export class PrestamosAddComponent implements OnInit {
   }
 
   onSave() {
-        this.dialogRef.close();
+    this.prestamosService.savePrestamo(this.prestamo).subscribe(() =>{
+      this.dialogRef.close();
+    },(error)=>{
+      this.dialog.open(DialogErrorComponent, {
+        data: {error}
+      });
+    });
+      
 }  
 
 onClose() {
