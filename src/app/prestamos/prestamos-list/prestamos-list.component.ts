@@ -9,6 +9,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { Client } from 'src/app/clients/model/Client';
 import { ClientService } from 'src/app/clients/client.service';
 import { DialogConfirmationComponent } from 'src/app/core/dialog-confirmation/dialog-confirmation.component';
+import { GameService } from 'src/app/game/game.service';
+import { Game } from 'src/app/game/model/Game';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-prestamos-list',
@@ -25,35 +28,44 @@ export class PrestamosListComponent implements OnInit {
   totalElements: number = 0;
 
   listaClientes: Client[];
+  listaJuegos: Game[];
   filtroCliente: Client;
-  filtroTitulo: string;
+  filtroGame: Game;
   filtroFecha: Date;
 
   constructor(public prestamoService: PrestamosService,
     public clientService: ClientService,
-    public dialog: MatDialog,) { }
+    public gameService: GameService,
+    public dialog: MatDialog,
+    public datepipe: DatePipe) { }
 
   ngOnInit(): void {
     this.clientService.getClientes().subscribe(clientes=>{
       this.listaClientes = clientes;
+    })
+    this.gameService.getGames().subscribe(games=>{
+      this.listaJuegos = games;
     })
     this.loadPage();
   }
 
   loadPage(event?: PageEvent) {
 
-    let pageable : Pageable =  {
-        pageNumber: this.pageNumber,
-        pageSize: this.pageSize,
-        sort: [{
-            property: 'id',
-            direction: 'ASC'
-        }]
+    let pageable  =  {
+        idClient: this.filtroCliente?.id ? this.filtroCliente.id : null,
+        idGame: this.filtroGame?.id ? this.filtroGame.id : null,
+        fecha: this.filtroFecha ? this.datepipe.transform(this.filtroFecha, 'yyyy-MM-dd') : null,
+        pageable: {pageNumber: this.pageNumber,
+                  pageSize: this.pageSize,
+                  sort: [{
+                      property: 'id',
+                      direction: 'ASC'
+                  }]}
     }
 
     if (event != null) {
-        pageable.pageSize = event.pageSize
-        pageable.pageNumber = event.pageIndex;
+        pageable.pageable.pageSize = event.pageSize
+        pageable.pageable.pageNumber = event.pageIndex;
     }
 
     this.prestamoService.getPrestamosPageable(pageable).subscribe(data => {
@@ -91,7 +103,7 @@ dialogRef.afterClosed().subscribe(result => {
   }
 
   onCleanFilter(): void {
-    this.filtroTitulo = null;
+    this.filtroGame = null;
     this.filtroCliente = null;
     this.filtroFecha = null;
 
@@ -99,12 +111,7 @@ dialogRef.afterClosed().subscribe(result => {
 }
 
 onSearch(): void { 
-    let fecha = this.filtroFecha;
-    let title = this.filtroTitulo;
-    let clientId = this.filtroCliente != null ? this.filtroCliente.id : null;
-
-    this.prestamoService.getPrestamosFiltrados(title, clientId,fecha).subscribe(
-        prestamos => {this.dataSource.data = prestamos});
+    this.loadPage();
     
 }
 

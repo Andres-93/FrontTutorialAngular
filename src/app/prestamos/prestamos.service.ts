@@ -17,12 +17,8 @@ export class PrestamosService {
   constructor(private http: HttpClient,
     public datepipe: DatePipe) { }
 
-  getAllPrestamos(): Observable<Prestamo[]> {
-    return this.http.get<Prestamo[]>('http://localhost:8080/prestamo');
-  }
-
-  getPrestamosPageable(pageable: Pageable): Observable<PrestamosPage> {
-    return this.http.post<PrestamosPage>('http://localhost:8080/prestamo', {pageable:pageable});
+  getPrestamosPageable(pageable): Observable<PrestamosPage> {
+    return this.http.post<PrestamosPage>('http://localhost:8080/prestamo',pageable);
 } 
 
 savePrestamo(prestamo: Prestamo){

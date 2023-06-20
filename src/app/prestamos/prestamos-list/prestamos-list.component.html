@@ -5,7 +5,9 @@
         <form>
             <mat-form-field>
                 <mat-label>Título del juego</mat-label>
-                <input type="text" matInput placeholder="Título del juego" [(ngModel)]="filtroTitulo" name="title">
+                <mat-select disableRipple [(ngModel)]="filtroGame" name="game">
+                    <mat-option *ngFor="let game of listaJuegos" [value]="game">{{game.title}}</mat-option>
+                </mat-select>
             </mat-form-field>
 
             <mat-form-field>
